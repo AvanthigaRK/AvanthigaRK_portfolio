@@ -180,6 +180,42 @@ html{scroll-behavior:smooth}
   z-index:-1;
 }
 </style>
+/* MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+  /* 1. Adjust Container & Layout */
+  :root { --w: 100%; }
+  .wrap { padding: 20px; width: 100%; overflow-x: hidden; }
+  
+  /* 2. Stack Navigation */
+  nav { flex-direction: column; gap: 20px; text-align: center; }
+  nav div { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+  nav a { margin-left: 0; }
+  
+  /* 3. Fix Hero Section */
+  .hero { grid-template-columns: 1fr; gap: 30px; }
+  .hero h1 { font-size: 2.2rem; } /* Shrink huge text */
+  .hero-side { margin-top: 20px; }
+  
+  /* 4. Fix Stats Grid */
+  .stats { flex-wrap: wrap; justify-content: flex-start; }
+  .stat { flex: 1 1 40%; } /* Make stats grow to fill space */
+
+  /* 5. Stack Experience Section */
+  .exp-row { flex-direction: column; gap: 8px; }
+  .exp-left { margin-bottom: 5px; color: var(--accent); }
+  
+  /* 6. Adjust Project Grid */
+  .grid { display: flex; flex-direction: column; gap: 20px; }
+  .card, .card.small { width: 100%; }
+  
+  /* 7. Hide Desktop-Only Effects */
+  #cursor-glow { display: none; } /* Disable glow on touch screens */
+  .hero-parallax { display: none; } /* Disable parallax on mobile */
+  
+  /* 8. Fix Contact Section */
+  .contact-icons { justify-content: center; }
+  footer { padding-bottom: 80px; } /* Space for floating button */
+}
 </head>
 <body>
 <div id="cursor-glow"></div>
@@ -417,10 +453,18 @@ engineering, and model interpretation using SAS Viya. </p></div>
 </div>
 
 <script>
-// Cursor Glow
-const glow=document.getElementById('cursor-glow');
-window.onmousemove=e=>{glow.style.top=e.clientY+'px';glow.style.left=e.clientX+'px'};
-
+// Cursor Glow (Desktop Only)
+if (window.matchMedia("(pointer: fine)").matches) {
+  const glow=document.getElementById('cursor-glow');
+  window.onmousemove=e=>{
+    glow.style.top=e.clientY+'px';
+    glow.style.left=e.clientX+'px';
+    
+    // Parallax Effect
+    document.querySelector('.hero').style.transform = 
+      `translate(${e.clientX * 0.01}px, ${e.clientY * 0.01}px)`;
+  };
+}
 // Theme Toggle
 let dark=true;
 document.getElementById('themeToggle').onclick=()=>{
@@ -456,3 +500,4 @@ window.addEventListener('scroll',()=>{
 </script>
 </body>
 </html>
+
